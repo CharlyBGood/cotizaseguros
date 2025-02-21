@@ -23,5 +23,6 @@ export default [
         { allowConstantExport: true },
       ],
     },
+    "parser": "babel-eslint"
   }
 ];

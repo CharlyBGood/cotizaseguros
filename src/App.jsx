@@ -35,11 +35,12 @@ function App() {
     <div className="min-h-screen bg-primary">
       <div className="max-w-4xl mx-auto pt-12 px-4 pb-12">
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-yellow mb-2">
-            Vehicle Insurance Quote
+          <h1 className="text-4xl font-bold mb-2">
+            Cotizá tu Seguro
           </h1>
           <p className="text-text/80">
-            Get an instant quote for your car or motorcycle insurance
+            Obtené al instante una cotización que se
+            adapte a tus necesidades.
           </p>
         </div>
 
@@ -80,7 +81,7 @@ function App() {
                   onClick={() => setStep(step - 1)}
                   className="px-6 py-2 border border-text/20 rounded-md text-text hover:bg-primary-alpha"
                 >
-                  Back
+                  Volver
                 </button>
               )}
               {step === 3 && showQuote && (
@@ -89,7 +90,7 @@ function App() {
                   onClick={() => setShowQuote(false)}
                   className="px-6 py-2 border border-text/20 rounded-md text-text hover:bg-primary-alpha"
                 >
-                  Back to Details
+                  Volver a editar
                 </button>
               )}
               {step < 3 && (
@@ -97,7 +98,7 @@ function App() {
                   type="submit"
                   className="ml-auto px-6 py-2 bg-blue text-text rounded-md hover:bg-blue/80 flex items-center"
                 >
-                  Next
+                  Continuar
                   <ArrowRight className="w-4 h-4 ml-2" />
                 </button>
               )}
