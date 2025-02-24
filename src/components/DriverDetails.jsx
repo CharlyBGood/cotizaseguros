@@ -29,11 +29,54 @@ function DriverDetails({ formData, setFormData, onGetQuote }) {
           label="Rastreo Satelital"
         />
       </div>
+      <div className="space-y-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <label className="block text-sm font-medium text-text" htmlFor="usodelvehiculo">
+            Uso que le das al vehículo
+          </label>
+          <input
+            type="text"
+            id="usodelvehiculo"
+            name="usodelvehiculo"
+            value={formData.usodelvehiculo}
+            onChange={(e) =>
+              setFormData({ ...formData, usodelvehiculo: e.target.value })
+            }
+            className="mt-1 block w-full rounded-md bg-primary/50 border-text/20 text-text placeholder-text/50 focus:border-blue focus:ring-blue"
+          />
+          <label className="block text-sm font-medium text-text" htmlFor="codigopostal">
+            Código postal
+          </label>
+          <input
+            type="text"
+            id="codigopostal"
+            name="codigopostal"
+            value={formData.codigopostal}
+            onChange={(e) =>
+              setFormData({ ...formData, codigopostal: e.target.value })
+            }
+            className="mt-1 block w-full rounded-md bg-primary/50 border-text/20 text-text placeholder-text/50 focus:border-blue focus:ring-blue"
+          />
+          <label className="block text-sm font-medium text-text" htmlFor="localidad">
+            Localidad
+          </label>
+          <input
+            type="text"
+            id="localidad"
+            name="localidad"
+            value={formData.localidad}
+            onChange={(e) =>
+              setFormData({ ...formData, localidad: e.target.value })
+            }
+            className="mt-1 block w-full rounded-md bg-primary/50 border-text/20 text-text placeholder-text/50 focus:border-blue focus:ring-blue"
+          />
 
-      {formData.year &&
-        formData.make &&
-        formData.model &&
-        formData.driverAge && (
+        </div>
+      </div>
+
+      {formData.usodelvehiculo &&
+        formData.codigopostal &&
+        formData.localidad && (
           <div className="mt-8">
             <button
               type="button"
