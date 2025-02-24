@@ -58,7 +58,6 @@ function App() {
             {step === 2 && (
               <VehicleDetails formData={formData} setFormData={setFormData} />
             )}
-
             {step === 3 && !showQuote && (
               <DriverDetails
                 formData={formData}
@@ -96,7 +95,7 @@ function App() {
               {step < 3 && (
                 <button
                   type="submit"
-                  className="ml-auto px-6 py-2 bg-blue text-text rounded-md hover:bg-blue/80 flex items-center"
+                  className="ml-auto px-6 py-2 bg-blue text-primary rounded-md hover:bg-blue/80 flex items-center"
                 >
                   Continuar
                   <ArrowRight className="w-4 h-4 ml-2" />
