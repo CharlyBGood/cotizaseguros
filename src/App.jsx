@@ -1,23 +1,23 @@
 import React, { useState } from 'react';
 import { ArrowRight } from 'lucide-react';
 import StepIndicator from './components/StepIndicator';
-import VehicleTypeSelection from './components/VehicleTypeSelection';
-import VehicleDetails from './components/VehicleDetails';
-import DriverDetails from './components/DriverDetails';
-import QuoteResult from './components/QuoteResult';
-import { getCoverageOptions } from './utils/calculateQuote';
+import ProductTypeSelection from './components/ProductTypeSelection';
+import ProductDetails from './components/ProductDetails';
+import ProductOptions from './components/ProductOptions';
+import CartSummary from './components/CartSummary';
+import { calculatePrice } from './utils/calculatePrice';
 
 function App() {
   const [step, setStep] = useState(1);
-  const [showQuote, setShowQuote] = useState(false);
+  const [showSummary, setShowSummary] = useState(false);
   const [formData, setFormData] = useState({
-    vehicleType: 'car',
-    year: '',
-    make: '',
+    productType: 'option1',
+    category: '',
+    brand: '',
     model: '',
-    mileage: '',
-    driverAge: '',
-    drivingHistory: 'clean'
+    features: '',
+    preferences: '',
+    extras: []
   });
 
   const handleSubmit = (e) => {
@@ -27,67 +27,67 @@ function App() {
     }
   };
 
-  const handleGetQuote = () => {
-    setShowQuote(true);
+  const handleGetSummary = () => {
+    setShowSummary(true);
   };
 
   return (
-    <div className="min-h-screen bg-primary">
-      <div className="max-w-4xl mx-auto pt-12 px-4 pb-12">
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold mb-2">
-            Cotizá tu Seguro
+    <div className="h-screen bg-portfolio-base flex items-center justify-center p-4">
+      <div className="w-full max-w-4xl max-h-full overflow-y-auto">
+        <div className="text-center mb-6">
+          <h1 className="text-3xl md:text-4xl font-bold mb-2 text-portfolio-text">
+            Carrito de Compras
           </h1>
-          <p className="text-text/80">
-            Obtené al instante una cotización que se
-            adapte a tus necesidades.
+          <p className="text-portfolio-text/80 text-sm md:text-base">
+            Configura tu producto ideal paso a paso y 
+            obtén un resumen personalizado.
           </p>
         </div>
 
-        <div className="bg-primary-alpha backdrop-blur-sm rounded-xl shadow-lg p-6 md:p-8 border border-blue/20">
+        <div className="bg-portfolio-dark/50 backdrop-blur-sm rounded-xl shadow-lg p-4 md:p-6 border border-portfolio-accent/20">
           <StepIndicator currentStep={step} />
 
           <form onSubmit={handleSubmit}>
             {step === 1 && (
-              <VehicleTypeSelection
+              <ProductTypeSelection
                 formData={formData}
                 setFormData={setFormData}
               />
             )}
 
             {step === 2 && (
-              <VehicleDetails formData={formData} setFormData={setFormData} />
+              <ProductDetails formData={formData} setFormData={setFormData} />
             )}
-            {step === 3 && !showQuote && (
-              <DriverDetails
+            {step === 3 && !showSummary && (
+              <ProductOptions
                 formData={formData}
                 setFormData={setFormData}
-                onGetQuote={handleGetQuote}
+                onGetSummary={handleGetSummary}
               />
             )}
 
-            {step === 3 && showQuote && (
-              <QuoteResult
+            {step === 3 && showSummary && (
+              <CartSummary
                 formData={formData}
-                getCoverageOptions={() => getCoverageOptions(formData)}
+                calculatePrice={() => calculatePrice(formData)}
               />
             )}
 
-            <div className="mt-8 flex justify-between">
-              {step > 1 && !showQuote && (
+            <div className="mt-6 flex justify-between">
+              {step > 1 && !showSummary && (
                 <button
                   type="button"
                   onClick={() => setStep(step - 1)}
-                  className="px-6 py-2 border border-text/20 rounded-md text-text hover:bg-primary-alpha"
+                  className="px-4 py-2 border border-portfolio-text/20 rounded-md text-portfolio-text hover:bg-portfolio-dark/80 text-sm"
                 >
                   Volver
                 </button>
               )}
-              {step === 3 && showQuote && (
+              {step === 3 && showSummary && (
                 <button
                   type="button"
-                  onClick={() => setShowQuote(false)}
-                  className="px-6 py-2 border border-text/20 rounded-md text-text hover:bg-primary-alpha"
+                  onClick={() => setShowSummary(false)}
+                  className="px-4 py-2 border border-portfolio-text/20 rounded-md text-portfolio-text hover:bg-portfolio-dark/80 text-sm"
                 >
                   Volver a editar
                 </button>
@@ -95,7 +95,7 @@ function App() {
               {step < 3 && (
                 <button
                   type="submit"
-                  className="ml-auto px-6 py-2 bg-blue text-primary rounded-md hover:bg-blue/80 flex items-center"
+                  className="ml-auto px-4 py-2 bg-portfolio-gradient-4 text-portfolio-text rounded-md hover:bg-portfolio-gradient-3 flex items-center text-sm"
                 >
                   Continuar
                   <ArrowRight className="w-4 h-4 ml-2" />
