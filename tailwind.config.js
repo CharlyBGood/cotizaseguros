@@ -21,7 +21,7 @@ export default {
         'primary-alpha': 'rgba(26, 15, 32, 0.81)',
       },
       fontFamily: {
-        sans: ['Federo', 'sans-serif'],
+        sans: ['Poppins', 'sans-serif'],
       },
     },
   },

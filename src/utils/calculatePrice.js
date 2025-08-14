@@ -1,54 +1,85 @@
-// Función para calcular el precio del producto basado en las selecciones
+// Función para calcular el precio de publicación de landing page
 export function calculatePrice(formData) {
   let basePrice = 0;
   let features = [];
   let extras = [];
+  let extrasOneTime = 0;
+  let monthlyTotal = 0;
 
-  // Precio base según el tipo de producto
-  switch (formData.productType) {
-    case 'option1':
-      basePrice = 299;
-      break;
-    case 'option2':
-      basePrice = 499;
-      break;
-    default:
-      basePrice = 199;
+  // Precio base según el tipo de publicación
+  if (formData.publicationType === 'basic') {
+    basePrice = 15;
+    features.push('Publicación Estándar - Hosting 1 año');
+  } else if (formData.publicationType === 'premium') {
+    basePrice = 35;
+    features.push('Publicación Premium');
+    
+    // Costo del dominio según extensión
+    if (formData.domainExtension) {
+      switch (formData.domainExtension) {
+        case '.com':
+          basePrice += 12;
+          features.push('Dominio .com (primer año)');
+          break;
+        case '.net':
+          basePrice += 10;
+          features.push('Dominio .net (primer año)');
+          break;
+        case '.org':
+          basePrice += 8;
+          features.push('Dominio .org (primer año)');
+          break;
+        case '.io':
+          basePrice += 25;
+          features.push('Dominio .io (primer año)');
+          break;
+      }
+    }
   }
 
-  // Ajustes según categoría
-  if (formData.category) {
-    switch (formData.category) {
-      case 'premium':
-        basePrice *= 1.3;
-        features.push('Versión Premium');
+  // Costo de modificaciones adicionales (una sola vez)
+  if (formData.modifications && formData.modifications.length > 0) {
+    const modificationPrices = {
+      'ecommerce': 15,
+      'forms': 8,
+      'blog': 12,
+      'gallery': 6,
+      'testimonials': 5
+    };
+
+    formData.modifications.forEach(mod => {
+      if (modificationPrices[mod]) {
+        extrasOneTime += modificationPrices[mod];
+        extras.push(`${mod} (+$${modificationPrices[mod]})`);
+      }
+    });
+  }
+
+  // Costo de entrega según tiempo
+  if (formData.deliveryTime) {
+    switch (formData.deliveryTime) {
+      case 'priority':
+        extrasOneTime += 10;
+        extras.push('Entrega Prioritaria (+$10)');
         break;
-      case 'standard':
-        basePrice *= 1.1;
-        features.push('Versión Standard');
-        break;
-      case 'basic':
-        features.push('Versión Básica');
+      case 'express':
+        extrasOneTime += 25;
+        extras.push('Entrega Express (+$25)');
         break;
     }
   }
 
-  // Características adicionales
+  // Servicios adicionales mensuales
   if (formData.extras && formData.extras.length > 0) {
+    const monthlyServices = {
+      'analytics': 15,
+      'maintenance': 20,
+      'support': 12
+    };
+
     formData.extras.forEach(extra => {
-      switch (extra) {
-        case 'warranty':
-          basePrice += 50;
-          extras.push('Garantía Extendida (+$50)');
-          break;
-        case 'support':
-          basePrice += 30;
-          extras.push('Soporte Premium (+$30)');
-          break;
-        case 'delivery':
-          basePrice += 25;
-          extras.push('Entrega Express (+$25)');
-          break;
+      if (monthlyServices[extra]) {
+        monthlyTotal += monthlyServices[extra];
       }
     });
   }
@@ -57,7 +88,9 @@ export function calculatePrice(formData) {
     basePrice: Math.round(basePrice),
     features,
     extras,
-    total: Math.round(basePrice)
+    extrasOneTime: Math.round(extrasOneTime),
+    monthlyTotal: Math.round(monthlyTotal),
+    total: Math.round(basePrice + extrasOneTime)
   };
 }
 
@@ -65,33 +98,24 @@ export function calculatePrice(formData) {
 export function getConfigurationOptions(formData) {
   const configurations = [
     {
-      name: 'Configuración Básica',
-      price: calculatePrice({ ...formData, category: 'basic' }).total,
+      name: 'Publicación Básica',
+      price: 0,
       features: [
-        'Funcionalidades esenciales',
-        'Soporte por email',
-        'Actualizaciones básicas'
+        'Landing page completa',
+        'URL de Netlify',
+        'Hosting 30 días',
+        'SSL básico'
       ]
     },
     {
-      name: 'Configuración Standard',
-      price: calculatePrice({ ...formData, category: 'standard' }).total,
+      name: 'Publicación Premium',
+      price: calculatePrice({ ...formData, publicationType: 'premium' }).total,
       features: [
-        'Todas las funcionalidades básicas',
-        'Soporte prioritario',
-        'Actualizaciones regulares',
-        'Personalización limitada'
-      ]
-    },
-    {
-      name: 'Configuración Premium',
-      price: calculatePrice({ ...formData, category: 'premium' }).total,
-      features: [
-        'Todas las funcionalidades',
-        'Soporte 24/7',
-        'Actualizaciones inmediatas',
-        'Personalización completa',
-        'Análisis avanzado'
+        'Todo lo básico incluido',
+        'Dominio personalizado',
+        'Hosting premium 1 año',
+        'Analytics incluido',
+        'Soporte prioritario'
       ]
     }
   ];
